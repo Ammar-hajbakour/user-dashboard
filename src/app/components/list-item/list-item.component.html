@@ -1,0 +1,19 @@
+@if(item){
+<div
+  class="bg-white font-semibold text-center rounded-3xl border shadow-lg p-10 w-full"
+>
+  <img
+    class="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto"
+    [src]="item.avatar"
+    [alt]="item.first_name"
+  />
+  <h1 class="text-lg text-gray-700">John Doe</h1>
+  <h3 class="text-sm text-gray-400" [innerHTML]="item.email"></h3>
+  <button
+    class="bg-indigo-600 px-8 py-2 mt-8 rounded-3xl text-gray-100 font-normal tracking-wide"
+    (click)="viewDetails(item.id)"
+  >
+    View Details
+  </button>
+</div>
+}

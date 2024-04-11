@@ -1,0 +1,30 @@
+<div class="flex justify-center">
+  <nav class="flex space-x-2" aria-label="Pagination">
+    <button
+      *ngIf="canGoPrev"
+      (click)="changePage(page - 1)"
+      class="relative inline-flex items-center px-4 py-2 text-sm bg-indigo-600 text-white font-semibold cursor-pointer leading-5 rounded-3xl transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10"
+    >
+      Previous
+    </button>
+    <button
+      *ngFor="let p of pagesBtns"
+      (click)="changePage(p)"
+      class="relative inline-flex items-center px-4 py-2 text-sm font-medium cursor-pointer leading-5 rounded-3xl transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:z-10"
+      [class]="
+        page === p
+          ? 'bg-indigo-600 text-white'
+          : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+      "
+    >
+      {{ p }}
+    </button>
+    <button
+      *ngIf="canGoNext"
+      (click)="changePage(page + 1)"
+      class="relative inline-flex items-center px-4 py-2 text-sm bg-indigo-600 text-white font-semibold cursor-pointer leading-5 rounded-3xl transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10"
+    >
+      Next
+    </button>
+  </nav>
+</div>

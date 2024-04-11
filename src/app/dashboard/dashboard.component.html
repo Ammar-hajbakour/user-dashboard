@@ -1,0 +1,18 @@
+<div class="h-screen flex flex-col justify-between">
+  <app-header (seachInput)="search($event)"></app-header>
+  <div
+    class="w-full max-w-[1180px] mx-auto py-6 flex-1 flex flex-col justify-between gap-12"
+  >
+    <ng-container *ngIf="users()">
+      <app-grid-list [items]="users()"></app-grid-list>
+      @if(paginator()){
+      <app-paginator
+        [total]="total()"
+        [page]="page()"
+        [pageSize]="per_page()"
+        (pageChange)="changePage($event)"
+      ></app-paginator>
+      }
+    </ng-container>
+  </div>
+</div>
