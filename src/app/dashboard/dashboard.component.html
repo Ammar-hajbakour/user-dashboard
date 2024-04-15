@@ -3,7 +3,7 @@
   <div
     class="w-full max-w-[1180px] mx-auto py-6 flex-1 flex flex-col justify-between gap-12"
   >
-    <ng-container *ngIf="users()">
+    <ng-container *ngIf="users().length > 0; else loadingTemplate">
       <app-grid-list [items]="users()"></app-grid-list>
       @if(paginator()){
       <app-paginator
@@ -14,5 +14,10 @@
       ></app-paginator>
       }
     </ng-container>
+    <ng-template #loadingTemplate>
+      <div class="h-full flex justify-center items-center">
+        <app-loader></app-loader>
+      </div>
+    </ng-template>
   </div>
 </div>

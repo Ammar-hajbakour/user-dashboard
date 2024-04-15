@@ -6,10 +6,11 @@ import { DataService } from '../services/data.service';
 import { User } from '../models/user.model';
 import { ReplaySubject, Subject, combineLatest, debounceTime, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { LoaderComponent } from '../components/loader/loader.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [AsyncPipe, NgIf, HeaderComponent, GridListComponent, PaginatorComponent],
+  imports: [AsyncPipe, NgIf, HeaderComponent, GridListComponent, PaginatorComponent, LoaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
