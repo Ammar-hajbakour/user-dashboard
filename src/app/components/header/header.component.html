@@ -2,22 +2,21 @@
 <header
   class="bg-white py-4 px-12 shadow border-solid border-t-2 border-blue-700"
 >
-  <div
-    class="flex items-center justify-between flex-wrap max-w-[1180px] mx-auto"
-  >
+  <div class="flex items-center justify-between flex-wrap app-container">
     <h1 class="font-semibold text-xl tracking-tight text-indigo-600">
       User Dashboard
     </h1>
 
+    @if(hasSearch){
     <div class="text-stone-600">
       <input
         class="border border-stone-300 placeholder-stone-400 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none"
         type="search"
         name="search"
         placeholder="Search"
-        (input)="search()"
-        [(ngModel)]="query"
+        (input)="search($event)"
       />
     </div>
+    }
   </div>
 </header>

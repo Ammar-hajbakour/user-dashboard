@@ -51,13 +51,13 @@ export class DashboardComponent {
   }
 
   async search(q: string) {
-    if (q === '' || +q > this.total() || +q < 1) {
+    if (q) {
       this.fetchUsers();
       return
     }
     this.query.set(q);
-    const data = [await firstValueFrom(this.dataService.getUser(+q))] as any[];
-    this.users.set([data[0].data]);
+    const user = await this.dataService.getUser(q);
+    this.users.set([user]);
     this.paginator.set(false)
   }
 }

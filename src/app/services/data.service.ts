@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
+import { Observable, firstValueFrom } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,24 +14,14 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getUsers(pageNumber: number): Observable<any> {
-
-    const cachedUser$ = this.usersCache.get(pageNumber);
-
-    if (cachedUser$) {
-      return cachedUser$;
-    }
-
-    const user$: Observable<any> = this.http.get('https://reqres.in/api/users?page=' + pageNumber)
-      .pipe(
-        tap(users => this.usersCache.set(pageNumber, user$)),
-        shareReplay(1)
-      );
-
-    return user$;
+    if (!this.usersCache.get(pageNumber)) this.usersCache.set(pageNumber, this.http.get<any>('https://reqres.in/api/users?page=' + pageNumber));
+    return this.usersCache.get(pageNumber)!;
   }
 
-  getUser(id: number): Observable<any> {
-    return this.http.get(`https://reqres.in/api/users/${id}`);
+  getUser(id: string): Promise<User> {
+    return firstValueFrom(this.http.get<User>(`https://reqres.in/api/users/${id}`).pipe(
+      map(((res: any) => res.data as User))
+    ));
   }
 
 }

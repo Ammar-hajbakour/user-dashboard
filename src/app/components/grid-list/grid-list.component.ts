@@ -5,12 +5,13 @@ import { User } from '../../models/user.model';
 @Component({
   selector: 'app-grid-list',
   standalone: true,
-  imports: [ListItemComponent ],
+  imports: [ListItemComponent],
   templateUrl: './grid-list.component.html',
   styleUrl: './grid-list.component.scss'
 })
 export class GridListComponent {
   @Input() items!: User[];
+  @Input() pageNumber: number = 0;
   constructor() { }
 
 }

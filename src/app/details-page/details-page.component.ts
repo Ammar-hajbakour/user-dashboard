@@ -1,28 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, map, switchMap } from 'rxjs';
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
+import { AsyncPipe, JsonPipe, Location, NgIf } from '@angular/common';
 import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-details-page',
   standalone: true,
-  imports: [NgIf, AsyncPipe,JsonPipe],
+  imports: [NgIf, AsyncPipe, JsonPipe],
   templateUrl: './details-page.component.html',
   styleUrl: './details-page.component.scss'
 })
-export class DetailsPageComponent {
+export class DetailsPageComponent implements OnInit {
 
-  constructor(private dataService: DataService, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private location: Location) { }
 
-  $user = this.route.paramMap.pipe(
-    switchMap((params) => this.dataService.getUser(+params.get('id')!)),
-    map((user:any)=> user.data as User)
-  );
+  userId!: number
+  user = signal<User | null>(null)
 
-  back(){
-    window.history.back();
+  private async getUser(id: string) {
+    const user = await this.dataService.getUser(id)
+    this.user.set(user)
+  }
+  ngOnInit() {
+
+
+  }
+
+  back() {
+    this.location.back()
+  }
+  previous() {
+    if (this.userId < 2) return
+    this.router.navigate(['/user', this.userId - 1])
+  }
+
+  next() {
+
+    this.router.navigate(['/user', this.userId + 1])
   }
 
 }

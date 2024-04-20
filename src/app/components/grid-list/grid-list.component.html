@@ -1,9 +1,9 @@
 @if(items){
 <div
-  class="grid w-full sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-12 xl:px-0"
+  class="grid w-full sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:px-0"
 >
   @for (item of items; track item.id) {
-  <app-list-item [item]="item"></app-list-item>
+  <app-list-item [item]="item" [pageNumber]="pageNumber"></app-list-item>
   }
 </div>
 }
