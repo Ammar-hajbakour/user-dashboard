@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer components {
   .app-container{
-    @apply w-full max-w-[1180px] mx-auto;
+    @apply w-full max-w-[1180px] mx-auto py-4 px-6;
   }
 }
 

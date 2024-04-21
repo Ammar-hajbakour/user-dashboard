@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, debounce, debounceTime, filter, map, tap } from 'rxjs';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +14,15 @@ import { BehaviorSubject, debounce, debounceTime, filter, map, tap } from 'rxjs'
 })
 export class HeaderComponent implements OnInit {
   @Input() hasSearch = false;
+  @Input() hasBackButton = false;
+
+  private searchService = inject(SearchService)
   ngOnInit(): void {
 
-    this.q$.pipe(debounceTime(1000)).subscribe((q) => this.seachInput.emit(q))
-
+    this.q$.subscribe((q: string) => {
+      this.searchService.setSearchValue(q)
+    })
   }
-  @Output() seachInput = new EventEmitter<string>();
 
 
 

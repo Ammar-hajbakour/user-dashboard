@@ -7,6 +7,7 @@ import { User } from '../models/user.model';
 import { ReplaySubject, Subject, combineLatest, debounceTime, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { LoaderComponent } from '../components/loader/loader.component';
+import { SearchService } from '../services/search.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,7 +17,7 @@ import { LoaderComponent } from '../components/loader/loader.component';
 })
 export class DashboardComponent {
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private searchService: SearchService) {
   }
 
 
@@ -30,7 +31,9 @@ export class DashboardComponent {
 
   query = signal('');
   ngOnInit() {
-    this.fetchUsers()
+    this.searchService.searchValue$.subscribe((q: string) => {
+      this.search(q)
+    })
   }
   fetchUsers() {
     this.dataService.getUsers(this.page()).subscribe(((data: any) => {
@@ -51,13 +54,11 @@ export class DashboardComponent {
   }
 
   async search(q: string) {
-    if (q) {
+    if (q === '') {
       this.fetchUsers();
       return
     }
-    this.query.set(q);
-    const user = await this.dataService.getUser(q);
-    this.users.set([user]);
+    this.users.set([await this.dataService.getUser(q)]);
     this.paginator.set(false)
   }
 }

@@ -1,4 +1,7 @@
-<ng-container *ngIf="users().length > 0; else loadingTemplate">
+<div
+  class="flex flex-col gap-12"
+  *ngIf="users().length > 0; else loadingTemplate"
+>
   <app-grid-list [items]="users()" [pageNumber]="page()"></app-grid-list>
   @if(paginator()){
   <app-paginator
@@ -8,7 +11,7 @@
     (pageChange)="changePage($event)"
   ></app-paginator>
   }
-</ng-container>
+</div>
 <ng-template #loadingTemplate>
   <div class="h-full flex justify-center items-center">
     <app-loader></app-loader>

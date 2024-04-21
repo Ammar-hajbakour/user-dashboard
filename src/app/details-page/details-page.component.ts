@@ -14,22 +14,34 @@ import { User } from '../models/user.model';
 })
 export class DetailsPageComponent implements OnInit {
 
-  constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private location: Location) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router) { }
 
   userId!: number
   user = signal<User | null>(null)
 
   private async getUser(id: string) {
-    const user = await this.dataService.getUser(id)
-    this.user.set(user)
+    try {
+      const user = await this.dataService.getUser(id)
+      this.user.set(user)
+    } catch (error: any) {
+      console.error(error)
+      if (error.status === 404) {
+        this.router.navigate(['/404'])
+      }
+    }
+
   }
   ngOnInit() {
 
 
+    this.route.params.subscribe(({ id }) => {
+      this.userId = +id
+      this.getUser(id)
+    })
   }
 
   back() {
-    this.location.back()
+    this.router.navigate(['/dashboard'])
   }
   previous() {
     if (this.userId < 2) return

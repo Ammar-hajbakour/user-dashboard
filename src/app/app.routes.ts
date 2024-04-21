@@ -10,7 +10,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        data: { searchByIdInput: true },
+        data: { hasSearchInput: true },
         loadComponent: () =>
           import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
       },
@@ -22,9 +22,12 @@ export const routes: Routes = [
             (c) => c.DetailsPageComponent
           ),
       },
+      {
+        path: '404', loadComponent: () => import('./not-found/not-found.component').then(c => c.NotFoundComponent)
+      }
     ]
   },
   {
-    path: '**', redirectTo: 'dashboard'
+    path: '**', redirectTo: '404'
   }
 ];

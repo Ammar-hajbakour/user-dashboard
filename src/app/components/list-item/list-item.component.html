@@ -10,11 +10,11 @@
   />
   <h1 class="text-lg text-gray-700">John Doe</h1>
   <h3 class="text-sm text-gray-400" [innerHTML]="item.email"></h3>
-  <button
-    class="bg-indigo-600 px-8 py-2 mt-8 rounded-3xl text-gray-100 font-normal tracking-wide"
-    (click)="viewDetails(item.id)"
+  <a
+    class="inline-block bg-indigo-600 px-8 py-2 mt-6 rounded-3xl text-gray-100 font-normal tracking-wide"
+    [routerLink]="['/user', item.id]"
   >
     View Details
-  </button>
+  </a>
 </div>
 }

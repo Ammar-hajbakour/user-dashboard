@@ -12,11 +12,4 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'user-dashboard';
 
-  async onActivate(outlet: any) {
-
-    const { snapshot } = outlet.activatedRoute
-    const { navbarClass } = snapshot.data
-    console.log(outlet as RouterOutlet);
-
-  }
 }

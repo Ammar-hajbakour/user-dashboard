@@ -1,4 +1,10 @@
-<app-header [hasSearch]="hasSearch$ | async"></app-header>
+<app-header
+  [hasSearch]="hasSearch()"
+  (seachInput)="search($event)"
+></app-header>
 <div class="app-container flex-1 flex flex-col">
-  <router-outlet #outlet (activate)="onActivate(outlet)"></router-outlet>
+  <router-outlet
+    #outlet="outlet"
+    (activate)="onActivate(outlet)"
+  ></router-outlet>
 </div>
