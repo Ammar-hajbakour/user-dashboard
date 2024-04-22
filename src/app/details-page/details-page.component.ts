@@ -1,8 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
-import { AsyncPipe, JsonPipe, Location, NgIf } from '@angular/common';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { User } from '../models/user.model';
 
 @Component({
@@ -12,10 +12,9 @@ import { User } from '../models/user.model';
   templateUrl: './details-page.component.html',
   styleUrl: './details-page.component.scss'
 })
-export class DetailsPageComponent implements OnInit {
-
+export class DetailsPageComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router) { }
-
+  private destroy$ = new ReplaySubject(1)
   userId!: number
   user = signal<User | null>(null)
 
@@ -32,9 +31,7 @@ export class DetailsPageComponent implements OnInit {
 
   }
   ngOnInit() {
-
-
-    this.route.params.subscribe(({ id }) => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(({ id }) => {
       this.userId = +id
       this.getUser(id)
     })
@@ -51,6 +48,11 @@ export class DetailsPageComponent implements OnInit {
   next() {
 
     this.router.navigate(['/user', this.userId + 1])
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true)
+    this.destroy$.complete()
   }
 
 }

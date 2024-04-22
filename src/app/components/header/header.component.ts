@@ -26,8 +26,8 @@ export class HeaderComponent implements OnInit {
 
 
 
-  q$ = new BehaviorSubject('');
+  q$ = new BehaviorSubject<string>('');
   search(e: any) {
-    this.q$.next(e.target['value'])
+    this.q$.next(e.target.value)
   }
 }

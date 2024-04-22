@@ -9,7 +9,7 @@ export class SearchService {
 
   private searchValueSubject = new BehaviorSubject<string>('');
 
-  searchValue$ = this.searchValueSubject.pipe(debounceTime(1000));
+  searchValue$ = this.searchValueSubject.pipe(debounceTime(500));
 
   setSearchValue(value: string) {
     this.searchValueSubject.next(value);

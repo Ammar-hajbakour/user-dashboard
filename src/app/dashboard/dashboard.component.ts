@@ -1,4 +1,4 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, WritableSignal, computed, effect, inject, signal } from '@angular/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { GridListComponent } from '../components/grid-list/grid-list.component';
 import { PaginatorComponent } from '../components/paginator/paginator.component';
@@ -20,45 +20,54 @@ export class DashboardComponent {
   constructor(private dataService: DataService, private searchService: SearchService) {
   }
 
-
-
   users: WritableSignal<User[]> = signal([]);
-  page: WritableSignal<any> = signal(1);
-  per_page = signal(0);
-  total = signal(0);
+  page = signal(1);
+  per_page = 6;
+  total = 0;
 
-  paginator = signal(false);
+  needPaginator = signal(false)
+  async ngOnInit(): Promise<void> {
+    this.searchService.searchValue$.subscribe((q: string) => this.search(q))
+    await this.fetch();
 
-  query = signal('');
-  ngOnInit() {
-    this.searchService.searchValue$.subscribe((q: string) => {
-      this.search(q)
-    })
   }
-  fetchUsers() {
-    this.dataService.getUsers(this.page()).subscribe(((data: any) => {
-      this.users.set(data.data.map((user: User) => ({ ...user, email: this.replaceAtSignWithEntity(user.email) })));
-      this.page.set(data.page);
-      this.per_page.set(data.per_page);
-      this.total.set(data.total);
-      this.paginator.set(true)
-    })
-    )
+  async fetch(): Promise<any> {
+    try {
+      const { total, data } = await firstValueFrom(this.dataService.getUsers(this.page()))
+      this.total = total;
+      this.needPaginator.set(true);
+      this.setUsers(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+
+  }
+  setUsers(data: User[]) {
+    this.users.set(data.map((user: User) => ({ ...user, email: this.replaceAtSignWithEntity(user?.email) })));
   }
   replaceAtSignWithEntity(email: string) {
-    return email.replace('@', '&#64;');
+    return email?.replace('@', '&#64;');
   }
-  changePage(page: number) {
+  async changePage(page: number) {
     this.page.set(page);
-    this.fetchUsers()
+    await this.fetch()
   }
 
   async search(q: string) {
-    if (q === '') {
-      this.fetchUsers();
+
+    if (!!q) {
+      try {
+        this.setUsers([await this.dataService.getUser(q)]);
+        this.needPaginator.set(false);
+      } catch (error: any) {
+        if (error.status === 404) {
+          this.setUsers([])
+          this.needPaginator.set(false);
+        }
+      }
       return
     }
-    this.users.set([await this.dataService.getUser(q)]);
-    this.paginator.set(false)
+    await this.fetch();
+
   }
 }

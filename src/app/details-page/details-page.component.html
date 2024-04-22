@@ -1,10 +1,10 @@
 @if(user(); as user){
-<div class="flex flex-col justify-center items-center gap-12">
-  <div class="md:flex md:gap-4 self-stretch">
-    <div class="bg-white min-h-[380px]">
+<div class="h-full flex flex-col justify-center items-center gap-12">
+  <div class="md:flex self-stretch md:gap-4">
+    <div class="bg-white min-w-[220px] min-h-[370px]">
       <div class="image shadow overflow-hidden">
         <img
-          class="w-full mx-auto min-h-[240px] object-cover object-center"
+          class="w-full mx-auto min-h-[220px] object-cover object-center"
           [src]="user.avatar"
           [alt]="user.first_name"
         />
@@ -29,8 +29,8 @@
         </ul>
       </div>
     </div>
-    <div class="w-full md:w-9/12 mx-2 h-64">
-      <div class="bg-white p-3 shadow-sm rounded-sm">
+    <div class="w-full">
+      <div class="bg-white p-4 mb-4 shadow-md rounded-sm">
         <div
           class="flex items-center space-x-2 font-semibold text-gray-900 leading-8"
         >
@@ -94,11 +94,9 @@
         </div>
       </div>
 
-      <div class="my-4"></div>
-
-      <div class="bg-white p-3 shadow-sm rounded-sm">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
+      <div class="bg-white p-4 shadow-md rounded-sm">
+        <div class="flex flex-wrap gap-4">
+          <div class="flex-1">
             <div
               class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3"
             >
@@ -131,7 +129,7 @@
               </li>
             </ul>
           </div>
-          <div>
+          <div class="flex-1">
             <div
               class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3"
             >
@@ -173,27 +171,27 @@
       </div>
     </div>
   </div>
-  <div class="flex divide-x divide-gray-200 row">
-    <button
-      class="px-6 py-3 font-sans text-xs font-bold text-center text-indigo-600 uppercase align-middle transition-all border-r-0 rounded-lg rounded-r-none select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-gray-900/10 hover:bg-indigo-200 active:bg-gray-900/20"
-      type="button"
-      (click)="previous()"
-    >
-      Previous
-    </button>
-    <button
-      class="px-6 py-3 font-sans text-xs font-bold text-center text-white uppercase align-middle transition-all select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-indigo-600 hover:bg-red-600 active:bg-gray-900/20"
-      (click)="back()"
-    >
-      Back
-    </button>
-    <button
-      class="px-6 py-3 font-sans text-xs font-bold text-center text-indigo-600 uppercase align-middle transition-all rounded-lg rounded-l-none select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-gray-900/10 hover:bg-indigo-200 active:bg-gray-900/20"
-      type="button"
-      (click)="next()"
-    >
-      Next
-    </button>
-  </div>
 </div>
 }
+<div class="flex items-center justify-center divide-gray-200">
+  <button
+    class="px-6 py-3 font-sans text-xs font-bold text-center text-indigo-600 uppercase align-middle transition-all border-r-0 rounded-lg rounded-r-none select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-gray-900/10 hover:bg-indigo-200 active:bg-gray-900/20"
+    type="button"
+    (click)="previous()"
+  >
+    Previous
+  </button>
+  <button
+    class="px-6 py-3 font-sans text-xs font-bold text-center text-white uppercase align-middle transition-all select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-indigo-600 hover:bg-red-600 active:bg-gray-900/20"
+    (click)="back()"
+  >
+    Back
+  </button>
+  <button
+    class="px-6 py-3 font-sans text-xs font-bold text-center text-indigo-600 uppercase align-middle transition-all rounded-lg rounded-l-none select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none bg-gray-900/10 hover:bg-indigo-200 active:bg-gray-900/20"
+    type="button"
+    (click)="next()"
+  >
+    Next
+  </button>
+</div>

@@ -19,9 +19,14 @@ export class DataService {
   }
 
   getUser(id: string): Promise<User> {
-    return firstValueFrom(this.http.get<User>(`https://reqres.in/api/users/${id}`).pipe(
+    const user = firstValueFrom(this.http.get<User>(`https://reqres.in/api/users/${id}`).pipe(
       map(((res: any) => res.data as User))
     ));
+
+    return user.catch((error: any) => {
+      console.error(error);
+      throw error;
+    });
   }
 
 }
