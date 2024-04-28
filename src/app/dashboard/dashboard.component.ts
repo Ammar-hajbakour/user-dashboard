@@ -1,13 +1,14 @@
-import { Component, WritableSignal, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, WritableSignal, inject, signal } from '@angular/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { GridListComponent } from '../components/grid-list/grid-list.component';
 import { PaginatorComponent } from '../components/paginator/paginator.component';
 import { DataService } from '../services/data.service';
 import { User } from '../models/user.model';
-import { ReplaySubject, Subject, combineLatest, debounceTime, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { SearchService } from '../services/search.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,6 +17,8 @@ import { SearchService } from '../services/search.service';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
+  destroyRef = inject(DestroyRef);
 
   constructor(private dataService: DataService, private searchService: SearchService) {
   }
@@ -27,7 +30,7 @@ export class DashboardComponent {
 
   needPaginator = signal(false)
   async ngOnInit(): Promise<void> {
-    this.searchService.searchValue$.subscribe((q: string) => this.search(q))
+    this.searchService.searchValue$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((q: string) => this.search(q))
     await this.fetch();
 
   }
