@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, firstValueFrom } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { User } from '../models/user.model';
-import { unsubscribe } from 'diagnostics_channel';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      // 'authorization': `Bearer Token`
+    })
+  }
   private usersCache = new Map<number, Observable<any>>();
 
   constructor(private http: HttpClient) { }
 
   getUsers(pageNumber: number): Observable<any> {
-    if (!this.usersCache.get(pageNumber)) this.usersCache.set(pageNumber, this.http.get<any>('https://reqres.in/api/users?page=' + pageNumber));
-    return this.usersCache.get(pageNumber)!;
+    // if (!this.usersCache.get(pageNumber)) this.usersCache.set(pageNumber, this.http.get<any>(`${environment.apiUrl}/users?page=${pageNumber}`));
+    // return this.usersCache.get(pageNumber)!;
+
+    return this.http.get<any>(`${environment.apiUrl}/users?page=${pageNumber}`);
   }
 
   getUser(id: string): Promise<User> {
-    const user = firstValueFrom(this.http.get<User>(`https://reqres.in/api/users/${id}`).pipe(
+    const user = firstValueFrom(this.http.get<User>(`${environment.apiUrl}/users/${id}`).pipe(
       map(((res: any) => res.data as User))
     ));
 

@@ -27,7 +27,6 @@ export class DashboardComponent {
   page = signal(1);
   per_page = 6;
   total = 0;
-
   needPaginator = signal(false)
   async ngOnInit(): Promise<void> {
     this.searchService.searchValue$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((q: string) => this.search(q))
@@ -40,8 +39,8 @@ export class DashboardComponent {
       this.total = total;
       this.needPaginator.set(true);
       this.setUsers(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
+    } catch (error: any) {
+      console.error(error.message as string)
     }
 
   }
